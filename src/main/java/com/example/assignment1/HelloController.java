@@ -32,11 +32,18 @@ public class HelloController {
     private Slider thresholdSlider;
     @FXML
     private Label thresholdLabel;
+    @FXML
+    private Label numberOfStarsText;
+    @FXML
+    private Slider starSizeSlider;
+    @FXML
+    private Label starSizeLabel;
     private String filepath;
     private Image greyscaleImage;
     private Image colourImage;
     private Image blackWhiteImage;
     private int[] array;
+    private int starSize = 20;
 
     public void initialize() {
         menuBar.getMenus().clear();
@@ -148,14 +155,22 @@ public class HelloController {
         }
     }
 
+    public void OnStarSizeSliderDragged() {
+        starSizeLabel.setText("" + (int) starSizeSlider.getValue());
+        starSize = (int) starSizeSlider.getValue();
+    }
+
     //union-find shenanigans
     public void OnTestButton() {
+        if(imageView.getImage() == null) {
+            return;
+        }
         Image image = blackWhiteImage;
         PixelReader pixelReader = image.getPixelReader();
         int width = (int) image.getWidth();
         int height = (int) image.getHeight();
-        //print out table of pixels
-        /*for(int i = 0; i < array.length; i++) {
+        /*print out table of pixels
+        for(int i = 0; i < array.length; i++) {
             int x = i % width;
             //int y = i / width;
             if(x == width - 1) {
@@ -205,15 +220,10 @@ public class HelloController {
                 }
             }
         }
-        //cheeky println to make sure union find worked
-        /*for(int i = 0; i < array.length; i++) {
-            if(array[i] != -1) {
-                System.out.println("The root of " + i + " is: " + find(array, array[i]));
-            }
-        }*/
         //calculate boundaries for each union
         PixelReader boundaryPixelReader = colourImage.getPixelReader();
         WritableImage writableImage = new WritableImage(boundaryPixelReader, width, height);
+        int numberOfStars = 0;
         for(int i = 0; i < array.length; i++) {
             if(array[i] != -1 && find(array, array[i]) == i) {
                 int minX = width;
@@ -242,7 +252,8 @@ public class HelloController {
                 }
                 //System.out.println("Boundaries for " + i + ", of size " + count + "px, are x:[" + minX + "-" + maxX + "], y: [" + minY + "-" + maxY + "]");
                 //Rectangle rectangle = new Rectangle(minX, minY, (maxX - minX), (maxY - minY));
-                if(count > 20) {
+                if(count > starSize) {
+                    numberOfStars++;
                     PixelWriter pixelWriter = writableImage.getPixelWriter();
                     for (int j = 0; j <= (maxX - minX); j++) {
                         pixelWriter.setColor((minX + j), minY, Color.BLUE);
@@ -255,7 +266,7 @@ public class HelloController {
                     imageView.setImage(writableImage);
                 }
             }
-            colourImage = imageView.getImage();
+            numberOfStarsText.setText("Number of stars: " + numberOfStars);
         }
     }
 
