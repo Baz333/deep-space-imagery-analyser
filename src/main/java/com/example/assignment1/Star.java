@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class Star {
 
     //fields
-    private int[] pixels;
+    private int size;
     private int minX;
     private int maxX;
     private int minY;
@@ -15,8 +15,8 @@ public class Star {
 
 
     //constructor
-    public Star(int[] pixels, int minX, int maxX, int minY, int maxY, Color color) {
-        setPixels(pixels);
+    public Star(int size, int minX, int maxX, int minY, int maxY, Color color) {
+        setSize(size);
         setMinX(minX);
         setMaxX(maxX);
         setMinY(minY);
@@ -27,12 +27,12 @@ public class Star {
 
 
     //getters & setters
-    public int[] getPixels() {
-        return pixels;
+    public int getSize() {
+        return size;
     }
 
-    public void setPixels(int[] pixels) {
-        this.pixels = pixels;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public int getMinX() {

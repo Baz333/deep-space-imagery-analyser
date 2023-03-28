@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.SimpleTimeZone;
 
 public class HelloController {
@@ -185,15 +186,6 @@ public class HelloController {
             int y = i / width;
             if(pixelReader.getColor(x, y).getRed() == 1.0) {
                 array[i] = i;
-            } else {
-                array[i] = -1;
-            }
-        }
-        //unions elements
-        for(int i = 0; i < array.length; i++) {
-            if(array[i] > 0) {
-                int x = i % width;
-                int y = i / width;
                 boolean canUnion = true;
                 if(x != 0 && y != 0) {
                     if(array[i - (width + 1)] >= 0) {
@@ -218,56 +210,55 @@ public class HelloController {
                         union(array, array[i - 1], array[i]);
                     }
                 }
+            } else {
+                array[i] = -1;
             }
         }
-        //calculate boundaries for each union
+        HashMap<Integer, Star> hashMap = new HashMap<>();
+        for(int i = 0; i < array.length; i++) {
+            if(array[i] != -1) {
+                if(!hashMap.containsKey(find(array, i))) {
+                    hashMap.put(i, new Star(1, i%width, i%width, i/width, i/width, Color.WHITE));
+                } else {
+                    Star star = hashMap.get(find(array, i));
+                    star.setSize(star.getSize() + 1);
+                    if(i%width < star.getMinX()) {
+                        star.setMinX(i%width);
+                    }
+                    if(i%width > star.getMaxX()) {
+                        star.setMaxX(i%width);
+                    }
+                    if(i/width < star.getMinY()) {
+                        star.setMinY(i/width);
+                    }
+                    if(i/width > star.getMaxY()) {
+                        star.setMaxY(i/width);
+                    }
+                }
+            }
+        }
+        System.out.println("Hash map size: " + hashMap.size());
         PixelReader boundaryPixelReader = colourImage.getPixelReader();
         WritableImage writableImage = new WritableImage(boundaryPixelReader, width, height);
         int numberOfStars = 0;
-        for(int i = 0; i < array.length; i++) {
-            if(array[i] != -1 && find(array, array[i]) == i) {
-                int minX = width;
-                int maxX = 0;
-                int minY = height;
-                int maxY = 0;
-                int count = 0;
-                for(int j = 0; j < array.length; j++) {
-                    if(array[j] != -1 && find(array, array[j]) == i) {
-                        count++;
-                        int x = j % width;
-                        int y = j / width;
-                        if(x < minX) {
-                            minX = x;
-                        }
-                        if(x > maxX) {
-                            maxX = x;
-                        }
-                        if(y < minY) {
-                            minY = y;
-                        }
-                        if(y > maxY) {
-                            maxY = y;
-                        }
-                    }
+        for(Integer i: hashMap.keySet()) {
+            Star star = hashMap.get(i);
+            System.out.println("Boundaries for " + i + ", of size " + star.getSize() + "px, are x:[" + star.getMinX() + "-" + star.getMaxX() + "], y: [" + star.getMinY() + "-" + star.getMaxY() + "]");
+            PixelWriter pixelWriter = writableImage.getPixelWriter();
+            if(star.getSize() >= starSize) {
+                numberOfStars++;
+                for (int j = 0; j <= (star.getMaxX() - star.getMinX()); j++) {
+                    pixelWriter.setColor((star.getMinX() + j), star.getMinY(), Color.BLUE);
+                    pixelWriter.setColor((star.getMinX() + j), star.getMaxY(), Color.BLUE);
                 }
-                //System.out.println("Boundaries for " + i + ", of size " + count + "px, are x:[" + minX + "-" + maxX + "], y: [" + minY + "-" + maxY + "]");
-                //Rectangle rectangle = new Rectangle(minX, minY, (maxX - minX), (maxY - minY));
-                if(count > starSize) {
-                    numberOfStars++;
-                    PixelWriter pixelWriter = writableImage.getPixelWriter();
-                    for (int j = 0; j <= (maxX - minX); j++) {
-                        pixelWriter.setColor((minX + j), minY, Color.BLUE);
-                        pixelWriter.setColor((minX + j), maxY, Color.BLUE);
-                    }
-                    for (int j = 0; j <= (maxY - minY); j++) {
-                        pixelWriter.setColor(minX, (minY + j), Color.BLUE);
-                        pixelWriter.setColor(maxX, (minY + j), Color.BLUE);
-                    }
-                    imageView.setImage(writableImage);
+                for (int j = 0; j <= (star.getMaxY() - star.getMinY()); j++) {
+                    pixelWriter.setColor(star.getMinX(), (star.getMinY() + j), Color.BLUE);
+                    pixelWriter.setColor(star.getMaxX(), (star.getMinY() + j), Color.BLUE);
                 }
+                imageView.setImage(writableImage);
             }
-            numberOfStarsText.setText("Number of stars: " + numberOfStars);
         }
+        numberOfStarsText.setText("Number of stars: " + numberOfStars);
     }
 
 }

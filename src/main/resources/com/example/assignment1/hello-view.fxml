@@ -8,8 +8,6 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -58,18 +56,7 @@
           </Tab>
           <Tab text="Untitled Tab 2">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView prefHeight="446.0" prefWidth="800.0">
-                          <columns>
-                            <TableColumn fx:id="starNoColumn" prefWidth="100.0" text="Star No." />
-                            <TableColumn fx:id="starSizeColumn" prefWidth="100.0" text="Star Size" />
-                              <TableColumn fx:id="sulphurColumn" prefWidth="100.0" text="Sulphur%" />
-                              <TableColumn fx:id="hydrogenColumn" prefWidth="100.0" text="Hydrogen%" />
-                              <TableColumn fx:id="oxygenColumn" prefWidth="100.0" text="Oxygen%" />
-                          </columns>
-                        </TableView>
-                     </children></AnchorPane>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
         </tabs>
