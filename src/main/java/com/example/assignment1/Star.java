@@ -10,18 +10,22 @@ public class Star {
     private int maxX;
     private int minY;
     private int maxY;
-    private Color color;
+    private int red;
+    private int green;
+    private int blue;
 
 
 
     //constructor
-    public Star(int size, int minX, int maxX, int minY, int maxY, Color color) {
+    public Star(int size, int minX, int maxX, int minY, int maxY, int red, int green, int blue) {
         setSize(size);
         setMinX(minX);
         setMaxX(maxX);
         setMinY(minY);
         setMaxY(maxY);
-        setColor(color);
+        setRed(red);
+        setGreen(green);
+        setBlue(blue);
     }
 
 
@@ -67,12 +71,28 @@ public class Star {
         this.maxY = maxY;
     }
 
-    public Color getColor() {
-        return color;
+    public int getRed() {
+        return red;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public int getGreen() {
+        return green;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public int getBlue() {
+        return blue;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
     }
 
 }

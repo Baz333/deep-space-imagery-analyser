@@ -60,13 +60,18 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="446.0" prefWidth="800.0">
+                        <TableView fx:id="tableView" prefHeight="447.0" prefWidth="800.0">
                           <columns>
                             <TableColumn fx:id="starNoColumn" prefWidth="100.0" text="Star No." />
-                            <TableColumn fx:id="starSizeColumn" prefWidth="100.0" text="Star Size" />
-                              <TableColumn fx:id="sulphurColumn" prefWidth="100.0" text="Sulphur%" />
-                              <TableColumn fx:id="hydrogenColumn" prefWidth="100.0" text="Hydrogen%" />
-                              <TableColumn fx:id="oxygenColumn" prefWidth="100.0" text="Oxygen%" />
+                            <TableColumn fx:id="rootColumn" prefWidth="100.0" text="Root" />
+                              <TableColumn fx:id="starSizeColumn" prefWidth="100.0" text="Star Size (px)" />
+                              <TableColumn prefWidth="300.0" text="Star Composition">
+                                 <columns>
+                                    <TableColumn fx:id="sulphurColumn" prefWidth="100.0" text="Sulphur %" />
+                                    <TableColumn fx:id="hydrogenColumn" prefWidth="100.0" text="Hydrogen %" />
+                                    <TableColumn fx:id="oxygenColumn" prefWidth="100.0" text="Oxygen %" />
+                                 </columns>
+                              </TableColumn>
                           </columns>
                         </TableView>
                      </children></AnchorPane>

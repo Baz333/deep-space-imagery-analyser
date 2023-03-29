@@ -4,16 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.SimpleTimeZone;
 
 public class HelloController {
 
@@ -39,6 +34,21 @@ public class HelloController {
     private Slider starSizeSlider;
     @FXML
     private Label starSizeLabel;
+    @FXML
+    private TableView<Star> tableView;
+    @FXML
+    private TableColumn<Star, String> starNoColumn;
+    @FXML
+    private TableColumn<Star, String> starSizeColumn;
+    @FXML
+    private TableColumn<Star, String> rootColumn;
+    @FXML
+    private TableColumn<Star, String> sulphurColumn;
+    @FXML
+    private TableColumn<Star, String> hydrogenColumn;
+    @FXML
+    private TableColumn<Star, String> oxygenColumn;
+
     private String filepath;
     private Image greyscaleImage;
     private Image colourImage;
@@ -215,10 +225,12 @@ public class HelloController {
             }
         }
         HashMap<Integer, Star> hashMap = new HashMap<>();
+        PixelReader colorPixelReader = colourImage.getPixelReader();
         for(int i = 0; i < array.length; i++) {
             if(array[i] != -1) {
+                Color color = colorPixelReader.getColor(i%width, i/width);
                 if(!hashMap.containsKey(find(array, i))) {
-                    hashMap.put(i, new Star(1, i%width, i%width, i/width, i/width, Color.WHITE));
+                    hashMap.put(i, new Star(1, i%width, i%width, i/width, i/width, (int) (color.getRed()*255), (int) (color.getGreen()*255), (int) (color.getBlue())*255));
                 } else {
                     Star star = hashMap.get(find(array, i));
                     star.setSize(star.getSize() + 1);
@@ -234,6 +246,9 @@ public class HelloController {
                     if(i/width > star.getMaxY()) {
                         star.setMaxY(i/width);
                     }
+                    star.setRed(star.getRed() + (int) color.getRed()*255);
+                    star.setGreen(star.getGreen() + (int) color.getGreen()*255);
+                    star.setBlue(star.getBlue() + (int) color.getBlue()*255);
                 }
             }
         }
@@ -243,9 +258,12 @@ public class HelloController {
         int numberOfStars = 0;
         for(Integer i: hashMap.keySet()) {
             Star star = hashMap.get(i);
-            System.out.println("Boundaries for " + i + ", of size " + star.getSize() + "px, are x:[" + star.getMinX() + "-" + star.getMaxX() + "], y: [" + star.getMinY() + "-" + star.getMaxY() + "]");
-            PixelWriter pixelWriter = writableImage.getPixelWriter();
             if(star.getSize() >= starSize) {
+                int avgRed = star.getRed()/star.getSize();
+                int avgGreen = star.getGreen()/star.getSize();
+                int avgBlue = star.getBlue()/star.getSize();
+                System.out.println("Boundaries for " + i + ", of size " + star.getSize() + "px, are x:[" + star.getMinX() + "-" + star.getMaxX() + "], y: [" + star.getMinY() + "-" + star.getMaxY() + "]. Average colors are (" + avgRed + ", " + avgGreen + ", " + avgBlue + "). Likely composition: " + (double) Math.round(((double) avgRed/255)*10000)/100 + "% sulphur, " + (double) Math.round(((double) avgGreen/255)*10000)/100 + "% hydrogen, " + (double) Math.round(((double) avgBlue/255)*10000)/100 + "% oxygen");
+                PixelWriter pixelWriter = writableImage.getPixelWriter();
                 numberOfStars++;
                 for (int j = 0; j <= (star.getMaxX() - star.getMinX()); j++) {
                     pixelWriter.setColor((star.getMinX() + j), star.getMinY(), Color.BLUE);
