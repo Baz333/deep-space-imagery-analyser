@@ -1,9 +1,11 @@
 package com.example.assignment1;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
@@ -35,6 +37,8 @@ public class HelloController {
     @FXML
     private Label starSizeLabel;
     @FXML
+    private Label reportLabel;
+    @FXML
     private TableView<Star> tableView;
     @FXML
     private TableColumn<Star, String> starNoColumn;
@@ -55,6 +59,7 @@ public class HelloController {
     private Image blackWhiteImage;
     private int[] array;
     private int starSize = 20;
+    HashMap<Integer, Star> hashMap = new HashMap<>();
 
     public void initialize() {
         menuBar.getMenus().clear();
@@ -62,12 +67,12 @@ public class HelloController {
         MenuItem openImage = new MenuItem("Open Image...");
         MenuItem exitApp = new MenuItem("Exit Application");
         openImage.setOnAction(actionEvent -> {
-            //FileChooser fileChooser = new FileChooser();
-            //fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*jpg", "*webp"));
-            //File selectedFile = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-            //if (selectedFile != null) {
-                //filepath = selectedFile.getAbsolutePath();
-                filepath = "C:\\Users\\bazda\\OneDrive - Waterford Institute of Technology\\Semester 4\\Data Structures & Algorithms 2\\space.jpg";
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*jpg", "*webp"));
+            File selectedFile = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+            if (selectedFile != null) {
+                filepath = selectedFile.getAbsolutePath();
+                //filepath = "C:\\Users\\bazda\\OneDrive - Waterford Institute of Technology\\Semester 4\\Data Structures & Algorithms 2\\space.jpg";
                 try {
                     InputStream inputStream = new FileInputStream(filepath);
                     Image image = new Image(inputStream);
@@ -83,7 +88,7 @@ public class HelloController {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            //}
+            }
         });
         exitApp.setOnAction(actionEvent -> {
             System.exit(0);
@@ -91,6 +96,14 @@ public class HelloController {
         Menu menuImage = new Menu("Image");
         menuBar.getMenus().addAll(menuFile, menuImage);
         menuFile.getItems().addAll(openImage, exitApp);
+        double labelX = reportLabel.getLayoutX();
+        double labelY = reportLabel.getLayoutY();
+        imageView.setOnMouseClicked(mouseEvent -> {
+            reportLabel.setLayoutX(mouseEvent.getX() + labelX);
+            reportLabel.setLayoutY(mouseEvent.getY() + labelY);
+            updateReportLabel(mouseEvent.getX(), mouseEvent.getY());
+        });
+        reportLabel.setVisible(false);
     }
 
     private void convertToGreyscale() {
@@ -108,6 +121,38 @@ public class HelloController {
                 }
             }
             greyscaleImage = writableImage;
+        }
+    }
+
+    private void updateReportLabel(double x, double y) {
+        if(imageView.getImage() != null && !hashMap.isEmpty()) {
+            double imageWidth = colourImage.getWidth();
+            double imageHeight = colourImage.getHeight();
+            double containerHeight = imageView.getFitHeight();
+            double containerWidth = (imageWidth/imageHeight) * containerHeight;
+            x = (imageWidth/containerWidth)*x;
+            y = (imageHeight/containerWidth)*y;
+            boolean foundStar = false;
+            for(Integer i: hashMap.keySet()){
+                Star star = hashMap.get(i);
+                if(x > star.getMinX() && x < star.getMaxX() && y > star.getMinY() && y < star.getMaxY()) {
+                    int avgRed = star.getRed()/star.getSize();
+                    int avgGreen = star.getGreen()/star.getSize();
+                    int avgBlue = star.getBlue()/star.getSize();
+                    if(!reportLabel.isVisible()) {
+                        reportLabel.setVisible(true);
+                    }
+                    reportLabel.setText("Star no: " + i +
+                            "\nSize (px): " + star.getSize() +
+                            "\nEstimated sulphur: " + (double) Math.round(((double) avgRed/255)*10000)/100 + "%" +
+                            "\nEstimated hydrogen: " + (double) Math.round(((double) avgGreen/255)*10000)/100 + "%" +
+                            "\nEstimated oxygen: " + (double) Math.round(((double) avgBlue/255)*10000)/100 + "%");
+                    foundStar = true;
+                }
+            }
+            if(!foundStar && reportLabel.isVisible()) {
+                reportLabel.setVisible(false);
+            }
         }
     }
 
@@ -224,7 +269,7 @@ public class HelloController {
                 array[i] = -1;
             }
         }
-        HashMap<Integer, Star> hashMap = new HashMap<>();
+        hashMap.clear();
         PixelReader colorPixelReader = colourImage.getPixelReader();
         for(int i = 0; i < array.length; i++) {
             if(array[i] != -1) {

@@ -36,7 +36,7 @@
       </MenuBar>
       <TabPane layoutY="27.0" prefHeight="473.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="Image Viewer">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -47,16 +47,17 @@
                         <Slider fx:id="thresholdSlider" layoutX="347.0" layoutY="402.0" max="255.0" onMouseDragged="#OnThresholdSliderDragged" value="128.0" />
                         <Label fx:id="thresholdLabel" layoutX="487.0" layoutY="400.0" text="128" />
                         <Label layoutX="294.0" layoutY="400.0" text="Threshold" />
-                        <Button fx:id="testButton" layoutX="35.0" layoutY="266.0" mnemonicParsing="false" onAction="#OnTestButton" text="Button" />
+                        <Button fx:id="testButton" layoutX="35.0" layoutY="266.0" mnemonicParsing="false" onAction="#OnTestButton" text="Union Find" />
                         <Label fx:id="numberOfStarsText" layoutX="20.0" layoutY="322.0" text="Number of Stars: 0" />
                         <Slider fx:id="starSizeSlider" layoutX="61.0" layoutY="363.0" onMouseDragged="#OnStarSizeSliderDragged" value="20.0" />
                         <Label fx:id="starSizeLabel" layoutX="201.0" layoutY="361.0" text="20" />
                         <Label layoutX="12.0" layoutY="362.0" text="Star Size" />
+                        <Label fx:id="reportLabel" layoutX="142.0" layoutY="24.0" style="-fx-background-color: #000000b0;" text="Star no: " textFill="WHITE" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Table">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
