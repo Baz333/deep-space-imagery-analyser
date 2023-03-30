@@ -14,18 +14,11 @@ import java.util.HashMap;
 
 public class HelloController {
 
+    //fxml fields
     @FXML
     private MenuBar menuBar;
     @FXML
     private ImageView imageView;
-    @FXML
-    private Button greyscaleButton;
-    @FXML
-    private Button colourButton;
-    @FXML
-    private Button blackWhiteButton;
-    @FXML
-    private Button testButton;
     @FXML
     private Slider thresholdSlider;
     @FXML
@@ -38,30 +31,18 @@ public class HelloController {
     private Label starSizeLabel;
     @FXML
     private Label reportLabel;
-    @FXML
-    private TableView<Star> tableView;
-    @FXML
-    private TableColumn<Star, String> starNoColumn;
-    @FXML
-    private TableColumn<Star, String> starSizeColumn;
-    @FXML
-    private TableColumn<Star, String> rootColumn;
-    @FXML
-    private TableColumn<Star, String> sulphurColumn;
-    @FXML
-    private TableColumn<Star, String> hydrogenColumn;
-    @FXML
-    private TableColumn<Star, String> oxygenColumn;
 
-    private String filepath;
-    private Image greyscaleImage;
-    private Image colourImage;
-    private Image blackWhiteImage;
-    private int[] array;
-    private int starSize = 20;
-    HashMap<Integer, Star> hashMap = new HashMap<>();
+    //other fields
+    private String filepath; //filepath for image being loaded
+    private Image greyscaleImage; //greyscale version of loaded image
+    private Image colourImage; //loaded image
+    private Image blackWhiteImage; //black & white version of loaded image
+    private int[] array; //array for storing if a pixel is black or white for union find
+    private int starSize = 20; //minimum star size
+    HashMap<Integer, Star> hashMap = new HashMap<>(); //hashmap for storing all star objects
 
     public void initialize() {
+        //setting up menu bar
         menuBar.getMenus().clear();
         Menu menuFile = new Menu("File");
         MenuItem openImage = new MenuItem("Open Image...");
@@ -96,6 +77,8 @@ public class HelloController {
         Menu menuImage = new Menu("Image");
         menuBar.getMenus().addAll(menuFile, menuImage);
         menuFile.getItems().addAll(openImage, exitApp);
+
+        //setting up star description label
         double labelX = reportLabel.getLayoutX();
         double labelY = reportLabel.getLayoutY();
         imageView.setOnMouseClicked(mouseEvent -> {
@@ -106,6 +89,7 @@ public class HelloController {
         reportLabel.setVisible(false);
     }
 
+    //converts loaded image to greyscale and stores in greyscaleImage
     private void convertToGreyscale() {
         Image image = colourImage;
         if(image != null) {
@@ -124,6 +108,7 @@ public class HelloController {
         }
     }
 
+    //updates the star description label with information about the clicked star + repositions it next to the cursor
     private void updateReportLabel(double x, double y) {
         if(imageView.getImage() != null && !hashMap.isEmpty()) {
             double imageWidth = colourImage.getWidth();
@@ -156,6 +141,7 @@ public class HelloController {
         }
     }
 
+    //union-find algorithm methods
     public static int find(int[] a, int id) {
         while(a[id] != id) {
             id = a[id];
@@ -167,6 +153,7 @@ public class HelloController {
         a[find(a, q)] = p;
     }
 
+    //sets the image view to the greyscale image
     public void OnGreyscaleButtonPressed() {
         if(imageView.getImage() != null) {
             System.out.println("//Setting to greyscale image//");
@@ -174,6 +161,7 @@ public class HelloController {
         }
     }
 
+    //sets the image view to the original image
     public void OnColourButtonPressed() {
         if(imageView.getImage() != null) {
             System.out.println("//Setting to colour image//");
@@ -181,6 +169,7 @@ public class HelloController {
         }
     }
 
+    //sets the image view to the black & white image
     public void OnBlackWhiteButtonPressed() {
         if(imageView.getImage() != null) {
             System.out.println("//Setting to black & white image//");
@@ -188,6 +177,7 @@ public class HelloController {
         }
     }
 
+    //changes the colour limit for black & white conversion
     public void OnThresholdSliderDragged() {
         thresholdLabel.setText("" + (int) thresholdSlider.getValue());
         Image image = greyscaleImage;
@@ -211,6 +201,7 @@ public class HelloController {
         }
     }
 
+    //changes the minimum star size
     public void OnStarSizeSliderDragged() {
         starSizeLabel.setText("" + (int) starSizeSlider.getValue());
         starSize = (int) starSizeSlider.getValue();
@@ -235,7 +226,7 @@ public class HelloController {
                 System.out.print(i + ", ");
             }
         }*/
-        //sets elements to index or -1
+        //sets elements to index or -1, then unions them together
         for(int i = 0; i < array.length; i++) {
             int x = i % width;
             int y = i / width;
@@ -269,6 +260,7 @@ public class HelloController {
                 array[i] = -1;
             }
         }
+        //converts unioned objects into star objects and adds them to hashmap
         hashMap.clear();
         PixelReader colorPixelReader = colourImage.getPixelReader();
         for(int i = 0; i < array.length; i++) {
@@ -298,6 +290,7 @@ public class HelloController {
             }
         }
         System.out.println("Hash map size: " + hashMap.size());
+        //prints out all statistics of star objects (size, boundaries, average colour, likely compostion)
         PixelReader boundaryPixelReader = colourImage.getPixelReader();
         WritableImage writableImage = new WritableImage(boundaryPixelReader, width, height);
         int numberOfStars = 0;

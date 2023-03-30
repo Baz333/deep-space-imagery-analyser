@@ -5,14 +5,14 @@ import javafx.scene.paint.Color;
 public class Star {
 
     //fields
-    private int size;
-    private int minX;
-    private int maxX;
-    private int minY;
-    private int maxY;
-    private int red;
-    private int green;
-    private int blue;
+    private int size; //amount of pixels in object
+    private int minX; //leftmost pixel
+    private int maxX; //rightmost pixel
+    private int minY; //uppermost pixel
+    private int maxY; //lowermost pixel
+    private int red; //total amount of red in object
+    private int green; //total amount of green in object
+    private int blue; //total amount of blue in object
 
 
 

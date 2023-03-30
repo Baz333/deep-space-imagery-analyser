@@ -41,13 +41,13 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ImageView fx:id="imageView" fitHeight="307.0" fitWidth="516.0" layoutX="142.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="113.80000000000001" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="24.0" />
-                        <Button fx:id="greyscaleButton" layoutX="284.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnGreyscaleButtonPressed" text="Greyscale" AnchorPane.rightAnchor="448.8" />
-                        <Button fx:id="blackWhiteButton" layoutX="424.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnBlackWhiteButtonPressed" text="Black &amp; White" AnchorPane.leftAnchor="424.0" />
-                        <Button fx:id="colourButton" layoutX="362.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnColourButtonPressed" text="Colour" AnchorPane.leftAnchor="362.0" />
+                        <Button layoutX="284.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnGreyscaleButtonPressed" text="Greyscale" AnchorPane.rightAnchor="448.8" />
+                        <Button layoutX="424.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnBlackWhiteButtonPressed" text="Black &amp; White" AnchorPane.leftAnchor="424.0" />
+                        <Button layoutX="362.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnColourButtonPressed" text="Colour" AnchorPane.leftAnchor="362.0" />
                         <Slider fx:id="thresholdSlider" layoutX="347.0" layoutY="402.0" max="255.0" onMouseDragged="#OnThresholdSliderDragged" value="128.0" />
                         <Label fx:id="thresholdLabel" layoutX="487.0" layoutY="400.0" text="128" />
                         <Label layoutX="294.0" layoutY="400.0" text="Threshold" />
-                        <Button fx:id="testButton" layoutX="35.0" layoutY="266.0" mnemonicParsing="false" onAction="#OnTestButton" text="Union Find" />
+                        <Button layoutX="35.0" layoutY="266.0" mnemonicParsing="false" onAction="#OnTestButton" text="Union Find" />
                         <Label fx:id="numberOfStarsText" layoutX="20.0" layoutY="322.0" text="Number of Stars: 0" />
                         <Slider fx:id="starSizeSlider" layoutX="61.0" layoutY="363.0" onMouseDragged="#OnStarSizeSliderDragged" value="20.0" />
                         <Label fx:id="starSizeLabel" layoutX="201.0" layoutY="361.0" text="20" />
@@ -61,16 +61,16 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableView" prefHeight="447.0" prefWidth="800.0">
+                        <TableView prefHeight="447.0" prefWidth="800.0">
                           <columns>
-                            <TableColumn fx:id="starNoColumn" prefWidth="100.0" text="Star No." />
-                            <TableColumn fx:id="rootColumn" prefWidth="100.0" text="Root" />
-                              <TableColumn fx:id="starSizeColumn" prefWidth="100.0" text="Star Size (px)" />
+                            <TableColumn prefWidth="100.0" text="Star No." />
+                            <TableColumn prefWidth="100.0" text="Root" />
+                              <TableColumn prefWidth="100.0" text="Star Size (px)" />
                               <TableColumn prefWidth="300.0" text="Star Composition">
                                  <columns>
-                                    <TableColumn fx:id="sulphurColumn" prefWidth="100.0" text="Sulphur %" />
-                                    <TableColumn fx:id="hydrogenColumn" prefWidth="100.0" text="Hydrogen %" />
-                                    <TableColumn fx:id="oxygenColumn" prefWidth="100.0" text="Oxygen %" />
+                                    <TableColumn prefWidth="100.0" text="Sulphur %" />
+                                    <TableColumn prefWidth="100.0" text="Hydrogen %" />
+                                    <TableColumn prefWidth="100.0" text="Oxygen %" />
                                  </columns>
                               </TableColumn>
                           </columns>
