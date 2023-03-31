@@ -232,27 +232,23 @@ public class HelloController {
             int y = i / width;
             if(pixelReader.getColor(x, y).getRed() == 1.0) {
                 array[i] = i;
-                boolean canUnion = true;
                 if(x != 0 && y != 0) {
-                    if(array[i - (width + 1)] >= 0) {
+                    if(array[i - (width + 1)] >= 0 && find(array, array[i - (width + 1)]) != find(array, array[i])) {
                         union(array, array[i - (width + 1)], array[i]);
-                        canUnion = false;
                     }
                 }
-                if(y != 0 && canUnion) {
-                    if(array[i - width] >= 0) {
+                if(y != 0) {
+                    if(array[i - width] >= 0 && find(array, array[i - width]) != find(array, array[i])) {
                         union(array, array[i - width], array[i]);
-                        canUnion = false;
                     }
                 }
-                if(x != (width - 1) && y != 0 && canUnion) {
-                    if(array[i - (width - 1)] >= 0) {
+                if(x != (width - 1) && y != 0) {
+                    if(array[i - (width - 1)] >= 0 && find(array, array[i - (width - 1)]) != find(array, array[i])) {
                         union(array, array[i - (width - 1)], array[i]);
-                        canUnion = false;
                     }
                 }
-                if(x != 0 && canUnion) {
-                    if(array[i - 1] >= 0) {
+                if(x != 0) {
+                    if(array[i - 1] >= 0 && find(array, array[i - 1]) != find(array, array[i])) {
                         union(array, array[i - 1], array[i]);
                     }
                 }
