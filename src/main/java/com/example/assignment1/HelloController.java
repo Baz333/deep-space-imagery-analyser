@@ -315,6 +315,46 @@ public class HelloController {
             }
         }
         numberOfStarsText.setText("Number of stars: " + numberOfStars);
+        PixelReader bwPixelReader = blackWhiteImage.getPixelReader();
+        WritableImage bwWriteableImage = new WritableImage(bwPixelReader, width, height);
+        PixelWriter pixelWriter = bwWriteableImage.getPixelWriter();
+        for(int i = 0; i < array.length; i++) {
+            if(array[i] != -1) {
+                Star star = hashMap.get(find(array, array[i]));
+                double red = 0;
+                double green = 0;
+                double blue = 0;
+                int avgRed = star.getRed() / star.getSize();
+                if(avgRed >= 30) {
+                    red = 255.0;
+                }
+                int avgGreen = star.getGreen() / star.getSize();
+                if(avgGreen >= 30) {
+                    green = 255.0;
+                }
+                int avgBlue = star.getBlue() / star.getSize();
+                if(avgBlue >= 30) {
+                    blue = 255.0;
+                }
+                if(red == 0 && green == 0 && blue == 0) {
+                    red = 255.0;
+                    green = 255.0;
+                    blue = 255.0;
+                }
+                Color color = new Color(red/255, green/255, blue/255, 1);
+                pixelWriter.setColor(i % width, i / width, color);
+            }
+            /*if(hashMap.containsKey(find(array, array[i]))) {
+                System.out.println("Works for " + i);
+                Star star = hashMap.get(find(array, i));
+                int avgRed = star.getRed() / star.getSize();
+                int avgGreen = star.getGreen() / star.getSize();
+                int avgBlue = star.getBlue() / star.getSize();
+                Color color = new Color((double)avgRed/255, (double)avgGreen/255, (double)avgBlue/255, 1);
+                pixelWriter.setColor(i % width, i / width, color);
+            }*/
+        }
+        blackWhiteImage = bwWriteableImage;
     }
 
 }
