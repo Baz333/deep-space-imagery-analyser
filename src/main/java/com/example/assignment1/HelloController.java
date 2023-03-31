@@ -127,7 +127,7 @@ public class HelloController {
                     if(!reportLabel.isVisible()) {
                         reportLabel.setVisible(true);
                     }
-                    reportLabel.setText("Star no: " + i +
+                    reportLabel.setText("Star no: " + star.getNumber() +
                             "\nSize (px): " + star.getSize() +
                             "\nEstimated sulphur: " + (double) Math.round(((double) avgRed/255)*10000)/100 + "%" +
                             "\nEstimated hydrogen: " + (double) Math.round(((double) avgGreen/255)*10000)/100 + "%" +
@@ -212,6 +212,8 @@ public class HelloController {
         if(imageView.getImage() == null) {
             return;
         }
+        blackWhiteImage = colourImage;
+        OnThresholdSliderDragged();
         Image image = blackWhiteImage;
         PixelReader pixelReader = image.getPixelReader();
         int width = (int) image.getWidth();
@@ -263,7 +265,7 @@ public class HelloController {
             if(array[i] != -1) {
                 Color color = colorPixelReader.getColor(i%width, i/width);
                 if(!hashMap.containsKey(find(array, i))) {
-                    hashMap.put(i, new Star(1, i%width, i%width, i/width, i/width, (int) (color.getRed()*255), (int) (color.getGreen()*255), (int) (color.getBlue())*255));
+                    hashMap.put(i, new Star(hashMap.size() + 1, 1, i%width, i%width, i/width, i/width, (int) (color.getRed()*255), (int) (color.getGreen()*255), (int) (color.getBlue())*255));
                 } else {
                     Star star = hashMap.get(find(array, i));
                     star.setSize(star.getSize() + 1);
