@@ -319,7 +319,7 @@ public class HelloController {
                 circle.setFill(new Color(0, 0, 0, 0));
                 circle.setStrokeWidth(2);
                 circle.setStroke(Color.BLUE);
-                Text numbering = new Text("" + star.getNumber());
+                Text numbering = new Text("" + numberOfStars);
                 pane.getChildren().addAll(numbering);
                 numbering.setX(star.getMaxX()/(imageWidth/containerWidth));
                 numbering.setY(star.getMaxY()/(imageHeight/containerHeight));

@@ -12,6 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.assignment1.HelloController">
    <children>
@@ -40,7 +41,6 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="imageView" fitHeight="307.0" fitWidth="516.0" layoutX="142.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="113.80000000000001" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="24.0" />
                         <Button layoutX="284.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnGreyscaleButtonPressed" text="Greyscale" AnchorPane.rightAnchor="448.8" />
                         <Button layoutX="424.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnBlackWhiteButtonPressed" text="Black &amp; White" AnchorPane.leftAnchor="424.0" />
                         <Button layoutX="362.0" layoutY="358.0" mnemonicParsing="false" onAction="#OnColourButtonPressed" text="Colour" AnchorPane.leftAnchor="362.0" />
@@ -52,6 +52,8 @@
                         <Slider fx:id="starSizeSlider" layoutX="61.0" layoutY="363.0" onMouseDragged="#OnStarSizeSliderDragged" value="20.0" />
                         <Label fx:id="starSizeLabel" layoutX="201.0" layoutY="361.0" text="20" />
                         <Label layoutX="12.0" layoutY="362.0" text="Star Size" />
+                        <ImageView fx:id="imageView" fitHeight="307.0" fitWidth="516.0" layoutX="142.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+                        <Pane fx:id="pane" layoutX="142.0" layoutY="24.0" prefHeight="307.0" prefWidth="516.0" />
                         <Label fx:id="reportLabel" layoutX="142.0" layoutY="24.0" style="-fx-background-color: #000000b0;" text="Star no: " textFill="WHITE" />
                      </children>
                   </AnchorPane>
