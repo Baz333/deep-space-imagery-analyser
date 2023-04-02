@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -31,6 +34,8 @@ public class HelloController {
     private Label starSizeLabel;
     @FXML
     private Label reportLabel;
+    @FXML
+    private Pane pane;
 
     //other fields
     private String filepath; //filepath for image being loaded
@@ -81,7 +86,7 @@ public class HelloController {
         //setting up star description label
         double labelX = reportLabel.getLayoutX();
         double labelY = reportLabel.getLayoutY();
-        imageView.setOnMouseClicked(mouseEvent -> {
+        pane.setOnMouseClicked(mouseEvent -> {
             reportLabel.setLayoutX(mouseEvent.getX() + labelX);
             reportLabel.setLayoutY(mouseEvent.getY() + labelY);
             updateReportLabel(mouseEvent.getX(), mouseEvent.getY());
@@ -212,6 +217,7 @@ public class HelloController {
         if(imageView.getImage() == null) {
             return;
         }
+        pane.getChildren().clear();
         blackWhiteImage = colourImage;
         OnThresholdSliderDragged();
         Image image = blackWhiteImage;
@@ -292,6 +298,10 @@ public class HelloController {
         PixelReader boundaryPixelReader = colourImage.getPixelReader();
         WritableImage writableImage = new WritableImage(boundaryPixelReader, width, height);
         int numberOfStars = 0;
+        double imageWidth = colourImage.getWidth();
+        double imageHeight = colourImage.getHeight();
+        double containerHeight = imageView.getFitHeight();
+        double containerWidth = (imageWidth/imageHeight) * containerHeight;
         for(Integer i: hashMap.keySet()) {
             Star star = hashMap.get(i);
             if(star.getSize() >= starSize) {
@@ -301,14 +311,29 @@ public class HelloController {
                 System.out.println("Boundaries for " + i + ", of size " + star.getSize() + "px, are x:[" + star.getMinX() + "-" + star.getMaxX() + "], y: [" + star.getMinY() + "-" + star.getMaxY() + "]. Average colors are (" + avgRed + ", " + avgGreen + ", " + avgBlue + "). Likely composition: " + (double) Math.round(((double) avgRed/255)*10000)/100 + "% sulphur, " + (double) Math.round(((double) avgGreen/255)*10000)/100 + "% hydrogen, " + (double) Math.round(((double) avgBlue/255)*10000)/100 + "% oxygen");
                 PixelWriter pixelWriter = writableImage.getPixelWriter();
                 numberOfStars++;
-                for (int j = 0; j <= (star.getMaxX() - star.getMinX()); j++) {
+                Circle circle = new Circle();
+                pane.getChildren().addAll(circle);
+                circle.setCenterX(((star.getMaxX() + star.getMinX())/2)/(imageWidth/containerWidth));
+                circle.setCenterY(((star.getMaxY() + star.getMinY())/2)/(imageHeight/containerHeight));
+                circle.setRadius(Math.max((star.getMaxX() - star.getMinX())/(imageWidth/containerWidth), (star.getMaxY() - star.getMinY())/imageHeight/containerHeight));
+                circle.setFill(new Color(0, 0, 0, 0));
+                circle.setStrokeWidth(2);
+                circle.setStroke(Color.BLUE);
+                Text numbering = new Text("" + star.getNumber());
+                pane.getChildren().addAll(numbering);
+                numbering.setX(star.getMaxX()/(imageWidth/containerWidth));
+                numbering.setY(star.getMaxY()/(imageHeight/containerHeight));
+                numbering.setFill(Color.RED);
+                numbering.setScaleX(0.7);
+                numbering.setScaleY(0.7);
+                /*for (int j = 0; j <= (star.getMaxX() - star.getMinX()); j++) {
                     pixelWriter.setColor((star.getMinX() + j), star.getMinY(), Color.BLUE);
                     pixelWriter.setColor((star.getMinX() + j), star.getMaxY(), Color.BLUE);
                 }
                 for (int j = 0; j <= (star.getMaxY() - star.getMinY()); j++) {
                     pixelWriter.setColor(star.getMinX(), (star.getMinY() + j), Color.BLUE);
                     pixelWriter.setColor(star.getMaxX(), (star.getMinY() + j), Color.BLUE);
-                }
+                }*/
                 imageView.setImage(writableImage);
             }
         }
